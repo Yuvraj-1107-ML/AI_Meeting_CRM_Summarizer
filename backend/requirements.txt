@@ -5,4 +5,4 @@ google-generativeai
 pydantic
 python-multipart
 aiofiles
-dotenv
+python-dotenv
