@@ -1,0 +1,45 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# Environment variables
+.env
+.env.*
+
+# macOS
+.DS_Store
+
+# VSCode settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# Logs
+*.log
+
+# Cache
+.cache/
+*.sqlite3
+
+# Temporary files
+temp_*
+meeting_summary.json
+meeting_summary.csv
+
+# Google credentials files
+*.json
+
+# Uvicorn reload artifacts
+reload.* 
+
+# Exported data
+exports/
