@@ -3,7 +3,7 @@
 An AI-powered web application that processes meeting transcripts or audio recordings to generate **structured CRM summaries, pain points, objections, action items, and timelines** using Google Cloud Speech-to-Text and Gemini Pro.
 
 <img width="1000" height="700" alt="Screenshot 2025-07-16 222746" src="https://github.com/user-attachments/assets/b9e5c4cc-a96d-4f9c-88de-df4194e73af0" />
-<img width="1000" height="700" alt="Screenshot 2025-07-16 222704" src="https://github.com/user-attachments/assets/c479287d-7ad0-4418-8bb0-377eed6ccc55" />
+
 
 
 
