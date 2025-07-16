@@ -74,7 +74,7 @@ REACT_APP_BACKEND_URL=http://localhost:8000
 
 ```bash
 cd backend
-uvicorn main:app --reload --port 8000
+python main.py
 ```
 
 **Start Frontend Server:**
