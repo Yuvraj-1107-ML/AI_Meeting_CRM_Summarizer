@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Upload, FileText, Send, Mail, CheckCircle, AlertCircle, Loader2, Mic, FileAudio, Moon, Sun, Download, Brain, Zap, Users, Clock } from "lucide-react";
+import { Upload, Send, Mail, CheckCircle, AlertCircle, Loader2, FileAudio, Moon, Sun, Download, Brain, Zap, Users, Clock } from "lucide-react";
 
 function App() {
   const [audioFile, setAudioFile] = useState(null);
