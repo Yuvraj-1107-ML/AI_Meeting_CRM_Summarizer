@@ -200,6 +200,5 @@ For support, questions, or feature requests:
 
 ---
 
-**Made with ❤️ for productive meetings**
+**Made with ❤️ by Yuvraj Dawande**
 
-*Last updated: [Current Date]*
