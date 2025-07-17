@@ -361,7 +361,7 @@ function App() {
                             // Handle headers
                             if (line.startsWith('### ')) {
                               return (
-                                <h3 key={index} className={`text-lg sm:text-xl font-bold mt-6 sm:mt-8 mb-3 sm:mb-4 pb-2 border-b ${darkMode ? 'text-gray-200 border-gray-600' : 'text-gray-800 border-gray-300'}`}>
+                                <h3 key={index} className={`text-xl sm:text-2xl font-bold mt-6 sm:mt-8 mb-3 sm:mb-4 pb-2 border-b ${darkMode ? 'text-gray-200 border-gray-600' : 'text-gray-800 border-gray-300'}`}>
                                   {line.replace('### ', '')}
                                 </h3>
                               );
@@ -370,7 +370,7 @@ function App() {
                             // Handle bold text
                             if (line.startsWith('**') && line.endsWith('**')) {
                               return (
-                                <p key={index} className={`font-semibold mt-4 sm:mt-6 mb-2 sm:mb-3 text-base sm:text-lg ${darkMode ? 'text-gray-300' : 'text-gray-800'}`}>
+                                <p key={index} className={`font-semibold mt-4 sm:mt-6 mb-2 sm:mb-3 text-lg sm:text-xl ${darkMode ? 'text-gray-300' : 'text-gray-800'}`}>
                                   {line.replace(/\*\*/g, '')}
                                 </p>
                               );
@@ -380,8 +380,8 @@ function App() {
                             if (line.startsWith('- ') || line.startsWith('* ')) {
                               return (
                                 <div key={index} className="flex items-start gap-2 sm:gap-3 mb-2 sm:mb-3 ml-3 sm:ml-6">
-                                  <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full mt-2 flex-shrink-0 ${darkMode ? 'bg-blue-400' : 'bg-blue-500'}`}></div>
-                                  <span className={`text-sm sm:text-lg ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{line.replace(/^[-*]\s/, '')}</span>
+                                  <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full mt-2 sm:mt-3 flex-shrink-0 ${darkMode ? 'bg-blue-400' : 'bg-blue-500'}`}></div>
+                                  <span className={`text-base sm:text-lg leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{line.replace(/^[-*]\s/, '')}</span>
                                 </div>
                               );
                             }
@@ -389,7 +389,7 @@ function App() {
                             // Handle regular paragraphs
                             if (line.trim() && !line.startsWith('*') && !line.includes('|')) {
                               return (
-                                <p key={index} className={`mb-3 sm:mb-4 leading-relaxed text-sm sm:text-lg ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                <p key={index} className={`mb-3 sm:mb-4 leading-relaxed text-base sm:text-lg ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                                   {line}
                                 </p>
                               );
