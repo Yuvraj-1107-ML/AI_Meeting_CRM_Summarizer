@@ -10,7 +10,7 @@ An AI-powered web application that processes meeting transcripts or audio record
 ## 🚀 Live Demo
 
 - **Frontend (Netlify)**: https://mesummarizer.netlify.app/
-- **Backend API (Render)**: https://ai-meeting-crm-summarizer-1.onrender.com
+- **Backend API (Render)**: https://ai-meeting-crm-summarizer-1.onrender.com/docs
 
 ## 📋 Overview
 
