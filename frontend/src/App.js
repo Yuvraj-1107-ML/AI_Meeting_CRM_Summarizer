@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Upload, FileText, Send, Mail, CheckCircle, AlertCircle, Loader2, Mic, FileAudio, Moon, Sun, Sparkles, Download } from "lucide-react";
+import { Upload, FileText, Send, Mail, CheckCircle, AlertCircle, Loader2, Mic, FileAudio, Moon, Sun, Download, Brain, Zap, Users, Clock } from "lucide-react";
 
 function App() {
   const [audioFile, setAudioFile] = useState(null);
@@ -11,13 +11,13 @@ function App() {
   const [notification, setNotification] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
 
-  // Initialize theme from memory or system preference
+  // Initialize theme from system preference
   useEffect(() => {
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     setDarkMode(systemPrefersDark);
   }, []);
 
-  // Update theme and apply to document
+  // Update theme
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -63,7 +63,6 @@ function App() {
           body: formData,
         });
       } else if (textInput.trim()) {
-        // Fixed: Use FormData for text input to match backend expectation
         const formData = new FormData();
         formData.append("transcript_text", textInput);
         res = await fetch("https://ai-meeting-crm-summarizer-1.onrender.com/process_text_meeting/", {
@@ -161,317 +160,346 @@ function App() {
     };
     
     const colorMap = {
-      success: "bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700 text-green-800 dark:text-green-200",
-      error: "bg-red-100 dark:bg-red-900/30 border-red-300 dark:border-red-700 text-red-800 dark:text-red-200",
-      info: "bg-blue-100 dark:bg-blue-900/30 border-blue-300 dark:border-blue-700 text-blue-800 dark:text-blue-200",
+      success: "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-800 dark:text-green-200",
+      error: "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-800 dark:text-red-200",
+      info: "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200",
     };
     
     const Icon = iconMap[notification.type];
     
     return (
-      <div className={`fixed top-4 right-4 p-4 rounded-xl border-2 flex items-center gap-2 shadow-2xl z-50 backdrop-blur-md ${colorMap[notification.type]} animate-in slide-in-from-right-full duration-300`}>
-        <Icon size={20} />
-        <span className="font-medium">{notification.message}</span>
+      <div className={`fixed top-4 right-4 p-4 rounded-lg border flex items-center gap-2 shadow-lg z-50 ${colorMap[notification.type]} animate-in slide-in-from-right-full duration-300`}>
+        <Icon size={18} />
+        <span className="text-sm font-medium">{notification.message}</span>
       </div>
     );
   };
 
   return (
-    <div className={`min-h-screen transition-all duration-500 ${darkMode 
-      ? 'bg-gradient-to-br from-gray-900 via-slate-800 to-purple-900' 
-      : 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100'} p-4`}>
+    <div className={`min-h-screen transition-colors duration-300 ${darkMode 
+      ? 'bg-gray-900' 
+      : 'bg-gray-50'}`}>
       
       <NotificationComponent notification={notification} />
       
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8 relative">
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleDarkMode}
-            className={`fixed top-6 right-6 z-50 p-3 rounded-full transition-all duration-300 hover:scale-110 ${darkMode 
-              ? 'bg-yellow-500 text-white shadow-lg shadow-yellow-500/25' 
-              : 'bg-slate-800 text-white shadow-lg shadow-slate-800/25'} backdrop-blur-md`}
-          >
-            {darkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
-          </button>
-          
-          <h1 className={`text-5xl font-bold mb-4 tracking-tight ${darkMode 
-            ? 'bg-gradient-to-r from-purple-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent' 
-            : 'bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'}`}>
-            Sales and Operation Meeting Transcript Summarizer 
-          </h1>
-          
-          <p className={`text-xl font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-            AI-Powered Meeting Transcript Summarizer and Action Item Extractor
-          </p>
-        </div>
-
-        {/* Main Card */}
-        <div className={`rounded-3xl shadow-2xl border overflow-hidden backdrop-blur-lg transition-all duration-500 ${darkMode 
-          ? 'bg-gray-800/80 border-gray-700/50 shadow-black/50' 
-          : 'bg-white/80 border-gray-200/50 shadow-gray-900/10'}`}>
-          
-          {/* Input Section */}
-          <div className="p-6 sm:p-8 space-y-8">
-            {/* Text Input */}
-            <div className="space-y-4">
-              <label className={`flex items-center gap-3 text-xl font-bold ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
-                <div className={`p-2 rounded-lg ${darkMode ? 'bg-blue-500/20' : 'bg-blue-500/10'}`}>
-                  <FileText className="w-5 h-5" />
-                </div>
-                Enter Meeting Transcript
-              </label>
-              
-              <div className="relative">
-                <textarea
-                  value={textInput}
-                  onChange={handleTextChange}
-                  rows="4"
-                  placeholder="Paste your meeting transcript here..."
-                  className={`w-full border-2 rounded-2xl p-6 focus:outline-none focus:ring-4 transition-all duration-300 resize-none text-lg ${darkMode 
-                    ? 'bg-gray-700/50 border-gray-600 text-gray-200 placeholder-gray-500 focus:ring-blue-500/30 focus:border-blue-500' 
-                    : 'bg-white/80 border-gray-300 text-gray-700 placeholder-gray-400 focus:ring-blue-500/30 focus:border-blue-500'}`}
-                ></textarea>
-                <div className={`absolute bottom-4 right-4 text-sm ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                  {textInput.length} characters
-                </div>
+      {/* Header */}
+      <header className={`border-b ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-3">
+              <div className={`p-2 rounded-lg ${darkMode ? 'bg-blue-600' : 'bg-blue-600'}`}>
+                <Brain className="w-6 h-6 text-white" />
               </div>
+              <h1 className={`text-xl font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                AI Meeting Summarizer
+              </h1>
             </div>
-
-            {/* Elegant Divider */}
-            <div className="flex items-center gap-4 sm:gap-6">
-              <div className={`flex-1 h-px ${darkMode ? 'bg-gradient-to-r from-transparent via-gray-600 to-transparent' : 'bg-gradient-to-r from-transparent via-gray-300 to-transparent'}`}></div>
-              <div className={`px-4 sm:px-6 py-2 rounded-full text-sm font-semibold ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
-                OR
-              </div>
-              <div className={`flex-1 h-px ${darkMode ? 'bg-gradient-to-r from-transparent via-gray-600 to-transparent' : 'bg-gradient-to-r from-transparent via-gray-300 to-transparent'}`}></div>
-            </div>
-
-            {/* Audio Upload */}
-            <div className="space-y-4">
-              <label className={`flex items-center gap-3 text-xl font-bold ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
-                <div className={`p-2 rounded-lg ${darkMode ? 'bg-purple-500/20' : 'bg-purple-500/10'}`}>
-                  <Upload className="w-5 h-5" />
-                </div>
-                Upload Audio File
-              </label>
-              
-              <div className="relative group">
-                <input
-                  type="file"
-                  accept="audio/*"
-                  onChange={handleAudioChange}
-                  className="hidden"
-                  id="audio-upload"
-                />
-                <label
-                  htmlFor="audio-upload"
-                  className={`flex items-center justify-center w-full h-32 border-2 border-dashed rounded-2xl cursor-pointer transition-all duration-300 group-hover:scale-[1.01] ${darkMode 
-                    ? 'border-gray-600 hover:border-purple-500 hover:bg-purple-500/10 bg-gray-700/30' 
-                    : 'border-gray-300 hover:border-purple-400 hover:bg-purple-50 bg-gray-50/50'}`}
-                >
-                  <div className="text-center px-4">
-                    {audioFile ? (
-                      <div className={`flex flex-col sm:flex-row items-center gap-3 ${darkMode ? 'text-purple-400' : 'text-purple-600'}`}>
-                        <div className={`p-3 rounded-full ${darkMode ? 'bg-purple-500/20' : 'bg-purple-500/10'}`}>
-                          <FileAudio className="w-8 h-8" />
-                        </div>
-                        <div className="text-center sm:text-left">
-                          <span className="font-semibold text-lg block">{audioFile.name}</span>
-                          <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                            {(audioFile.size / 1024 / 1024).toFixed(2)} MB
-                          </span>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className={`flex flex-col items-center gap-3 ${darkMode ? 'text-gray-400 group-hover:text-purple-400' : 'text-gray-500 group-hover:text-purple-500'}`}>
-                        <div className={`p-4 rounded-full ${darkMode ? 'bg-gray-700 group-hover:bg-purple-500/20' : 'bg-gray-200 group-hover:bg-purple-500/10'} transition-colors`}>
-                          <Mic className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <span className="font-semibold text-lg block">Click to upload audio file</span>
-                          <span className="text-sm">MP3, WAV, M4A supported • Max 20MB</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </label>
-              </div>
-            </div>
-
-            {/* Process Button */}
+            
             <button
-              onClick={handleSubmit}
-              disabled={isProcessing}
-              className={`w-full font-bold py-6 rounded-2xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 text-lg shadow-2xl ${darkMode 
-                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-purple-500/25' 
-                : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-blue-500/25'}`}
+              onClick={toggleDarkMode}
+              className={`p-2 rounded-lg transition-colors ${darkMode 
+                ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' 
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'}`}
             >
-              {isProcessing ? (
-                <>
-                  <Loader2 className="w-6 h-6 animate-spin" />
-                  Processing Meeting...
-                </>
-              ) : (
-                <>
-                  <Send className="w-6 h-6" />
-                  Process Meeting
-                  <Sparkles className="w-4 h-4 animate-pulse" />
-                </>
-              )}
+              {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
           </div>
+        </div>
+      </header>
 
-          {/* Results Section */}
-          {response && (
-            <div className={`border-t transition-all duration-500 ${darkMode ? 'border-gray-700 bg-gray-800/50' : 'border-gray-200 bg-gray-50/50'}`}>
-              <div className="p-8 space-y-8">
-                <div className={`flex items-center gap-3 text-2xl font-bold ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
-                  <div className="p-2 rounded-lg bg-green-500/20">
-                    <CheckCircle className="w-7 h-7 text-green-500" />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <h2 className={`text-4xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+            Transform Your Meetings with AI
+          </h2>
+          <p className={`text-lg max-w-2xl mx-auto ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+            Convert audio recordings or text transcripts into structured summaries, action items, and CRM insights powered by advanced AI
+          </p>
+          
+          {/* Features */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+            <div className={`p-6 rounded-xl border ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+              <div className="flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg mx-auto mb-4">
+                <Zap className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                Lightning Fast
+              </h3>
+              <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                Process hours of meeting content in seconds
+              </p>
+            </div>
+            
+            <div className={`p-6 rounded-xl border ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+              <div className="flex items-center justify-center w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg mx-auto mb-4">
+                <Users className="w-6 h-6 text-green-600 dark:text-green-400" />
+              </div>
+              <h3 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                CRM Ready
+              </h3>
+              <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                Generate structured notes for your CRM system
+              </p>
+            </div>
+            
+            <div className={`p-6 rounded-xl border ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+              <div className="flex items-center justify-center w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg mx-auto mb-4">
+                <Clock className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+              </div>
+              <h3 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                Save Time
+              </h3>
+              <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                Eliminate manual note-taking and follow-ups
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Input Section */}
+        <div className={`rounded-xl border shadow-sm ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+          <div className="p-6 lg:p-8">
+            <div className="space-y-8">
+              {/* Text Input */}
+              <div>
+                <label className={`block text-sm font-medium mb-3 ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+                  Meeting Transcript
+                </label>
+                <div className="relative">
+                  <textarea
+                    value={textInput}
+                    onChange={handleTextChange}
+                    rows="6"
+                    placeholder="Paste your meeting transcript here..."
+                    className={`w-full rounded-lg border px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${darkMode 
+                      ? 'bg-gray-700 border-gray-600 text-gray-100 placeholder-gray-400' 
+                      : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'}`}
+                  />
+                  <div className={`absolute bottom-3 right-3 text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                    {textInput.length} characters
                   </div>
-                  Meeting Summary Results
                 </div>
-                
-                <div className={`rounded-2xl border shadow-xl overflow-hidden ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-                  {/* Transcript Section */}
-                  {response.transcript && (
-                    <div className={`p-6 sm:p-8 border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>
-                        <h3 className={`text-xl font-bold ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>Meeting Transcript</h3>
-                      </div>
-                      <div className={`rounded-xl p-4 sm:p-6 border-l-4 border-blue-500 ${darkMode ? 'bg-blue-500/10' : 'bg-blue-50'}`}>
-                        <p className={`leading-relaxed text-base sm:text-lg ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{response.transcript}</p>
-                      </div>
-                    </div>
-                  )}
+              </div>
 
-                  {/* CRM Notes Section */}
-                  {response.crm_notes && (
-                    <div className="p-6 sm:p-8">
-                      <div className="flex items-center gap-3 mb-6">
-                        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                        <h3 className={`text-xl font-bold ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>CRM Notes & Analysis</h3>
-                      </div>
-                      <div className={`rounded-xl p-4 sm:p-6 border-l-4 border-green-500 ${darkMode ? 'bg-green-500/10' : 'bg-gradient-to-r from-green-50 to-emerald-50'}`}>
-                        <div className="prose prose-sm sm:prose-lg max-w-none">
-                          {response.crm_notes.split('\n').map((line, index) => {
-                            // Handle headers
-                            if (line.startsWith('### ')) {
-                              return (
-                                <h3 key={index} className={`text-xl sm:text-2xl font-bold mt-6 sm:mt-8 mb-3 sm:mb-4 pb-2 border-b ${darkMode ? 'text-gray-200 border-gray-600' : 'text-gray-800 border-gray-300'}`}>
-                                  {line.replace('### ', '')}
-                                </h3>
-                              );
-                            }
-                            
-                            // Handle bold text
-                            if (line.startsWith('**') && line.endsWith('**')) {
-                              return (
-                                <p key={index} className={`font-semibold mt-4 sm:mt-6 mb-2 sm:mb-3 text-lg sm:text-xl ${darkMode ? 'text-gray-300' : 'text-gray-800'}`}>
-                                  {line.replace(/\*\*/g, '')}
-                                </p>
-                              );
-                            }
-                            
-                            // Handle bullet points
-                            if (line.startsWith('- ') || line.startsWith('* ')) {
-                              return (
-                                <div key={index} className="flex items-start gap-2 sm:gap-3 mb-2 sm:mb-3 ml-3 sm:ml-6">
-                                  <div className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full mt-2 sm:mt-3 flex-shrink-0 ${darkMode ? 'bg-blue-400' : 'bg-blue-500'}`}></div>
-                                  <span className={`text-base sm:text-lg leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{line.replace(/^[-*]\s/, '')}</span>
-                                </div>
-                              );
-                            }
-                            
-                            // Handle regular paragraphs
-                            if (line.trim() && !line.startsWith('*') && !line.includes('|')) {
-                              return (
-                                <p key={index} className={`mb-3 sm:mb-4 leading-relaxed text-base sm:text-lg ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                                  {line}
-                                </p>
-                              );
-                            }
-                            
-                            return null;
-                          })}
+              {/* Divider */}
+              <div className="flex items-center">
+                <div className={`flex-1 h-px ${darkMode ? 'bg-gray-700' : 'bg-gray-200'}`} />
+                <span className={`px-4 text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  OR
+                </span>
+                <div className={`flex-1 h-px ${darkMode ? 'bg-gray-700' : 'bg-gray-200'}`} />
+              </div>
+
+              {/* Audio Upload */}
+              <div>
+                <label className={`block text-sm font-medium mb-3 ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+                  Audio File
+                </label>
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept="audio/*"
+                    onChange={handleAudioChange}
+                    className="hidden"
+                    id="audio-upload"
+                  />
+                  <label
+                    htmlFor="audio-upload"
+                    className={`flex items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${darkMode 
+                      ? 'border-gray-600 hover:border-gray-500 hover:bg-gray-700/50' 
+                      : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'}`}
+                  >
+                    <div className="text-center">
+                      {audioFile ? (
+                        <div className="flex items-center gap-3">
+                          <FileAudio className={`w-8 h-8 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`} />
+                          <div className="text-left">
+                            <p className={`text-sm font-medium ${darkMode ? 'text-gray-200' : 'text-gray-900'}`}>
+                              {audioFile.name}
+                            </p>
+                            <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                              {(audioFile.size / 1024 / 1024).toFixed(2)} MB
+                            </p>
+                          </div>
                         </div>
+                      ) : (
+                        <div>
+                          <Upload className={`w-8 h-8 mx-auto mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`} />
+                          <p className={`text-sm font-medium ${darkMode ? 'text-gray-200' : 'text-gray-900'}`}>
+                            Upload audio file
+                          </p>
+                          <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                            MP3, WAV, M4A supported • Max 20MB
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                onClick={handleSubmit}
+                disabled={isProcessing}
+                className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5" />
+                    Process Meeting
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Results Section */}
+        {response && (
+          <div className={`mt-8 rounded-xl border shadow-sm ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+            <div className="p-6 lg:p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <CheckCircle className="w-6 h-6 text-green-500" />
+                <h3 className={`text-xl font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  Meeting Summary
+                </h3>
+              </div>
+              
+              <div className="space-y-6">
+                {/* Transcript */}
+                {response.transcript && (
+                  <div>
+                    <h4 className={`text-sm font-medium mb-3 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      Transcript
+                    </h4>
+                    <div className={`p-4 rounded-lg border-l-4 border-blue-500 ${darkMode ? 'bg-blue-900/20' : 'bg-blue-50'}`}>
+                      <p className={`text-sm leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        {response.transcript}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* CRM Notes */}
+                {response.crm_notes && (
+                  <div>
+                    <h4 className={`text-sm font-medium mb-3 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      CRM Notes & Analysis
+                    </h4>
+                    <div className={`p-4 rounded-lg border-l-4 border-green-500 ${darkMode ? 'bg-green-900/20' : 'bg-green-50'}`}>
+                      <div className="prose prose-sm max-w-none">
+                        {response.crm_notes.split('\n').map((line, index) => {
+                          if (line.startsWith('### ')) {
+                            return (
+                              <h5 key={index} className={`text-base font-semibold mt-4 mb-2 ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+                                {line.replace('### ', '')}
+                              </h5>
+                            );
+                          }
+                          
+                          if (line.startsWith('**') && line.endsWith('**')) {
+                            return (
+                              <p key={index} className={`font-medium mt-3 mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                {line.replace(/\*\*/g, '')}
+                              </p>
+                            );
+                          }
+                          
+                          if (line.startsWith('- ') || line.startsWith('* ')) {
+                            return (
+                              <div key={index} className="flex items-start gap-2 mb-1 ml-4">
+                                <div className={`w-1 h-1 rounded-full mt-2 flex-shrink-0 ${darkMode ? 'bg-gray-400' : 'bg-gray-600'}`} />
+                                <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                  {line.replace(/^[-*]\s/, '')}
+                                </span>
+                              </div>
+                            );
+                          }
+                          
+                          if (line.trim() && !line.startsWith('*') && !line.includes('|')) {
+                            return (
+                              <p key={index} className={`mb-2 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                {line}
+                              </p>
+                            );
+                          }
+                          
+                          return null;
+                        })}
                       </div>
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
 
-                {/* Download Section */}
-                <div className={`rounded-2xl border p-6 sm:p-8 shadow-xl ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-                  <div className={`flex items-center gap-3 text-lg sm:text-xl font-bold mb-6 ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
-                    <div className="p-2 rounded-lg bg-blue-500/20">
-                      <Download className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
+                {/* Actions */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4">
+                  {/* Export */}
+                  <div className={`p-4 rounded-lg border ${darkMode ? 'bg-gray-700/50 border-gray-600' : 'bg-gray-50 border-gray-200'}`}>
+                    <div className="flex items-center gap-2 mb-3">
+                      <Download className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                      <h4 className={`text-sm font-medium ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+                        Export Summary
+                      </h4>
                     </div>
-                    Export Summary
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => handleDownload('json')}
+                        className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors"
+                      >
+                        JSON
+                      </button>
+                      <button
+                        onClick={() => handleDownload('csv')}
+                        className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-md transition-colors"
+                      >
+                        CSV
+                      </button>
+                    </div>
                   </div>
-                  
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <button
-                      onClick={() => handleDownload('json')}
-                      className="flex-1 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-xl transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center gap-2 text-base sm:text-lg shadow-2xl shadow-blue-500/25"
-                    >
-                      <Download className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Download JSON
-                    </button>
-                    <button
-                      onClick={() => handleDownload('csv')}
-                      className="flex-1 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-xl transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center gap-2 text-base sm:text-lg shadow-2xl shadow-green-500/25"
-                    >
-                      <Download className="w-4 h-4 sm:w-5 sm:h-5" />
-                      Download CSV
-                    </button>
-                  </div>
-                </div>
 
-                {/* Email Section */}
-                <div className={`rounded-2xl border p-6 sm:p-8 shadow-xl ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-                  <div className={`flex items-center gap-3 text-lg sm:text-xl font-bold mb-6 ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
-                    <div className="p-2 rounded-lg bg-purple-500/20">
-                      <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-purple-500" />
+                  {/* Email */}
+                  <div className={`p-4 rounded-lg border ${darkMode ? 'bg-gray-700/50 border-gray-600' : 'bg-gray-50 border-gray-200'}`}>
+                    <div className="flex items-center gap-2 mb-3">
+                      <Mail className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                      <h4 className={`text-sm font-medium ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+                        Send via Email
+                      </h4>
                     </div>
-                    Send Summary via Email
-                  </div>
-                  
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={handleEmailChange}
-                      placeholder="recipient@example.com"
-                      className={`flex-1 border-2 rounded-xl p-3 sm:p-4 focus:outline-none focus:ring-4 transition-all duration-300 text-base sm:text-lg ${darkMode 
-                        ? 'bg-gray-700/50 border-gray-600 text-gray-200 placeholder-gray-500 focus:ring-purple-500/30 focus:border-purple-500' 
-                        : 'bg-white border-gray-300 text-gray-700 placeholder-gray-400 focus:ring-purple-500/30 focus:border-purple-500'}`}
-                    />
-                    <button
-                      onClick={handleEmailSubmit}
-                      disabled={isEmailSending}
-                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-xl transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2 whitespace-nowrap text-base sm:text-lg shadow-2xl shadow-purple-500/25"
-                    >
-                      {isEmailSending ? (
-                        <>
-                          <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-                          Send Email
-                        </>
-                      )}
-                    </button>
+                    <div className="flex gap-2">
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={handleEmailChange}
+                        placeholder="recipient@example.com"
+                        className={`flex-1 px-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 ${darkMode 
+                          ? 'bg-gray-700 border-gray-600 text-gray-100' 
+                          : 'bg-white border-gray-300 text-gray-900'}`}
+                      />
+                      <button
+                        onClick={handleEmailSubmit}
+                        disabled={isEmailSending}
+                        className="px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white text-sm font-medium rounded-md transition-colors flex items-center gap-1"
+                      >
+                        {isEmailSending ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Send className="w-4 h-4" />
+                        )}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
