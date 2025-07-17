@@ -58,7 +58,7 @@ function App() {
       if (audioFile) {
         const formData = new FormData();
         formData.append("file", audioFile);
-        res = await fetch("http://localhost:8000/process_audio_meeting/", {
+        res = await fetch("https://ai-meeting-crm-summarizer-1.onrender.com/process_audio_meeting/", {
           method: "POST",
           body: formData,
         });
@@ -66,7 +66,7 @@ function App() {
         // Fixed: Use FormData for text input to match backend expectation
         const formData = new FormData();
         formData.append("transcript_text", textInput);
-        res = await fetch("http://localhost:8000/process_text_meeting/", {
+        res = await fetch("https://ai-meeting-crm-summarizer-1.onrender.com/process_text_meeting/", {
           method: "POST",
           body: formData,
         });
@@ -100,7 +100,7 @@ function App() {
     
     setIsEmailSending(true);
     try {
-      const res = await fetch("http://localhost:8000/email_summary/", {
+      const res = await fetch("https://ai-meeting-crm-summarizer-1.onrender.com/email_summary/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ receiver_email: email }),
@@ -128,7 +128,7 @@ function App() {
 
     try {
       const endpoint = format === 'json' ? '/export/json/' : '/export/csv/';
-      const res = await fetch(`http://localhost:8000${endpoint}`);
+      const res = await fetch(`https://ai-meeting-crm-summarizer-1.onrender.com${endpoint}`);
       
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
