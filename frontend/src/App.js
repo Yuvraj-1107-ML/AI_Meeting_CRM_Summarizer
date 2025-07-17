@@ -199,7 +199,7 @@ function App() {
           <h1 className={`text-5xl font-bold mb-4 tracking-tight ${darkMode 
             ? 'bg-gradient-to-r from-purple-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent' 
             : 'bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'}`}>
-            AI Powered Meeting Transcript Summarizer 
+            Sales and Operation Meeting Transcript Summarizer 
           </h1>
           
           <p className={`text-xl font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
