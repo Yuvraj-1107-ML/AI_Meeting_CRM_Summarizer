@@ -3,28 +3,21 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
 from pydantic import BaseModel
 import uvicorn
-import os
 from google.cloud import speech
 import google.generativeai as genai
 from utils.export import export_to_json, export_to_csv
 from utils.email import send_email
-
-
-
-from dotenv import load_dotenv
-load_dotenv()
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
 
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
-
-
-
-
-#  Initialize FastAPI app
-app = FastAPI()
 
 #  Allow frontend CORS
 app.add_middleware(
@@ -33,6 +26,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+#  Initialize FastAPI app
+app = FastAPI()
 
 # Initialize Gemini model globally
 gemini_model = genai.GenerativeModel("gemini-2.5-pro")
@@ -146,13 +143,13 @@ import google.generativeai as genai
 @app.get("/export/csv/")
 def get_csv_export():
     try:
-        # ✅ Load existing transcript from JSON
+        # Load existing transcript from JSON
         import json
         with open("meeting_summary.json", "r") as f:
             data = json.load(f)
             transcript = data.get("transcript", "")
 
-        # ✅ Call Gemini to extract CRM CSV format
+        #  Call Gemini to extract CRM CSV format
         gemini_model = genai.GenerativeModel("gemini-2.5-pro")
 
         prompt = f"""
@@ -196,5 +193,5 @@ async def email_summary(request: EmailRequest):
     return {"message": "Summary emailed successfully"}
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
