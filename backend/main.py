@@ -19,6 +19,12 @@ genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
 
+
+
+#  Initialize FastAPI app
+app = FastAPI()
+
+
 #  Allow frontend CORS
 app.add_middleware(
     CORSMiddleware,
@@ -28,8 +34,6 @@ app.add_middleware(
 )
 
 
-#  Initialize FastAPI app
-app = FastAPI()
 
 # Initialize Gemini model globally
 gemini_model = genai.GenerativeModel("gemini-2.5-pro")
