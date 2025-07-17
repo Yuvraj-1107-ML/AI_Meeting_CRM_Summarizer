@@ -214,7 +214,7 @@ function App() {
             Transform Your Meetings with AI
           </h2>
           <p className={`text-lg max-w-2xl mx-auto ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-            Convert audio recordings or text transcripts into structured summaries, action items, and CRM insights 
+            Convert audio recordings or text transcripts into structured summaries, action items, and CRM insights Powered by AiLifeBOT 
           </p>
           
           {/* Features */}
